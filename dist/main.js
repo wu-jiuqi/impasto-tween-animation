@@ -80,9 +80,9 @@ let heroToken = 0;
 let heroTimers = [];
 const statePriority = { default: 0, hover: 1, focus: 1, pressed: 2, clicked: 2, error: 3, success: 3, loading: 4, disabled: 5 };
 function clearHeroTimers() { heroTimers.forEach(clearTimeout); heroTimers = []; }
-function transitionHero(next, message = '') {
+function transitionHero(next, message = '', force = false) {
   if (!heroButton || heroButton.disabled) next = 'disabled';
-  if (statePriority[next] < statePriority[heroState] && ['hover', 'focus', 'default'].includes(next)) return;
+  if (!force && statePriority[next] < statePriority[heroState] && ['hover', 'focus', 'default'].includes(next)) return;
   heroState = next;
   heroButton.dataset.state = next;
   heroButton.setAttribute('aria-busy', String(next === 'loading'));
@@ -114,17 +114,17 @@ function beginHeroAction() {
       if (token !== heroToken) return;
       transitionHero('success', '可恢复结果');
       heroJuice('success：高光与回弹均保留材质。');
-      heroTimers.push(setTimeout(() => { if (token === heroToken) transitionHero('default'); }, isReduced() ? 10 : 900));
+      heroTimers.push(setTimeout(() => { if (token === heroToken) transitionHero('default', '', true); }, isReduced() ? 10 : 900));
     }, isReduced() ? 10 : 520));
   }, isReduced() ? 1 : 180));
 }
 heroButton.addEventListener('pointerenter', (event) => { if (event.pointerType !== 'touch' && heroState !== 'loading') transitionHero('hover'); });
-heroButton.addEventListener('pointerleave', () => { if (heroState === 'hover') transitionHero('default'); });
+heroButton.addEventListener('pointerleave', () => { if (heroState === 'hover') transitionHero('default', '', true); });
 heroButton.addEventListener('focus', () => { if (heroState !== 'loading') transitionHero('focus', '键盘焦点'); });
-heroButton.addEventListener('blur', () => { if (heroState === 'focus') transitionHero('default'); });
+heroButton.addEventListener('blur', () => { if (heroState === 'focus') transitionHero('default', '', true); });
 heroButton.addEventListener('pointerdown', () => { if (heroState !== 'loading') transitionHero('pressed', 'pointerdown'); });
 heroButton.addEventListener('pointerup', () => { if (heroState === 'pressed') transitionHero('clicked', '释放'); });
-heroButton.addEventListener('pointercancel', () => { clearHeroTimers(); ++heroToken; transitionHero('default', 'pointercancel 已清理'); });
+heroButton.addEventListener('pointercancel', () => { clearHeroTimers(); ++heroToken; transitionHero('default', 'pointercancel 已清理', true); });
 heroButton.addEventListener('click', beginHeroAction);
 heroButton.addEventListener('keydown', (event) => { if (event.key === ' ') event.preventDefault(); });
 pointerReactive(heroButton, heroGeometry);
