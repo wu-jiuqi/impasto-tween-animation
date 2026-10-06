@@ -1,0 +1,22 @@
+{
+  "skill": "impasto-tween-animation",
+  "version": "1.0.0",
+  "upstream": "palette-knife-impasto-ui",
+  "runtime": "h5-dom",
+  "input": "mixed",
+  "states": ["default", "hover", "focus-visible", "pressed", "clicked", "disabled", "selected", "loading", "success", "error"],
+  "tokens": {
+    "ease-standard": "cubic-bezier(.2,0,0,1)",
+    "ease-enter": "cubic-bezier(.16,1,.3,1)",
+    "ease-juice": "cubic-bezier(.22,1.25,.36,1)",
+    "ease-jelly": "cubic-bezier(.35,1.5,.65,1)",
+    "ease-step": "steps(4,end)"
+  },
+  "components": [
+    {"id":"hero-cta","source":"button","states":["default","hover","focus-visible","pressed","clicked","disabled"],"materialInvariant":["paintTexture","knifeEdge","textSafeZone"],"feedback":"juice"},
+    {"id":"state-tiles","source":"button-grid","states":["default","hover","focus-visible","pressed","clicked","disabled","selected","loading","success","error"],"materialInvariant":["paintTexture","highlight","textSafeZone"],"feedback":"state-sampler"},
+    {"id":"easing-lab","source":"button","states":["default","hover","pressed","clicked"],"materialInvariant":["paintTexture","textSafeZone"],"feedback":"easing-switch"}
+  ],
+  "reducedMotion": {"system":"prefers-reduced-motion: reduce","manualToggle":true,"fallback":"instant state + focus/contrast/text"},
+  "qa": {"desktop":"pending-runtime-check","mobile":"pending-runtime-check","nodeCheck":"passed","jsonParse":"passed"}
+}

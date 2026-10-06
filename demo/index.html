@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#182522" />
+  <title>厚涂 UI · 补间动画验收页</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="paint-noise" aria-hidden="true"></div>
+  <main class="app-shell">
+    <header class="masthead">
+      <div>
+        <p class="kicker">PALETTE-KNIFE / MOTION DOWNSTREAM</p>
+        <h1>厚涂 UI 补间动画</h1>
+        <p class="lede">把静态油彩做成有重量的交互：hover、pressed、clicked、果汁回弹、果冻形变与可访问的无动画降级。</p>
+      </div>
+      <div class="header-actions">
+        <button class="chip-button" id="reducedToggle" type="button" aria-pressed="false">减少动效：关</button>
+        <button class="chip-button" id="replayAll" type="button">重播全场</button>
+      </div>
+    </header>
+
+    <section class="hero-grid" aria-label="主交互验收">
+      <article class="paint-card hero-card">
+        <div class="card-eyebrow">01 · JUICY CTA</div>
+        <div class="hero-content">
+          <div>
+            <h2>给按钮一点果汁感</h2>
+            <p>移入上浮，按下压痕，点击后回弹。纹理与刀痕始终保留，不用纯色块覆盖材质。</p>
+          </div>
+          <button class="impasto-button hero-button" id="heroButton" type="button">
+            <span class="button-sheen" aria-hidden="true"></span>
+            <span class="button-label">试一下回弹</span>
+            <span class="button-glyph" aria-hidden="true">↗</span>
+          </button>
+          <p class="live-note" id="heroNote" role="status" aria-live="polite">等待你的操作。</p>
+        </div>
+      </article>
+      <aside class="paint-card recipe-card">
+        <div class="card-eyebrow">MOTION RECIPE</div>
+        <div class="recipe-display"><span class="recipe-swatch"></span><code>cubic-bezier(.22, 1.25, .36, 1)</code></div>
+        <dl class="metric-list">
+          <div><dt>主反馈</dt><dd>360ms</dd></div>
+          <div><dt>超调上限</dt><dd>4%</dd></div>
+          <div><dt>材质层</dt><dd>保留</dd></div>
+        </dl>
+        <p class="recipe-caption">y 控制点允许小幅越界，营造手工压痕后的回弹。</p>
+      </aside>
+    </section>
+
+    <section class="section-block" aria-labelledby="states-title">
+      <div class="section-heading"><div><p class="kicker">02 · STATE MATRIX</p><h2 id="states-title">十种状态，一张验收表</h2></div><span class="section-count">10 / 10</span></div>
+      <div class="state-grid">
+        <button class="state-tile" data-state="default" type="button"><span class="tile-paint"><i></i></span><strong>default</strong><small>静态材质</small></button>
+        <button class="state-tile" data-state="hover" type="button"><span class="tile-paint"><i></i></span><strong>hover</strong><small>上浮 · 高光</small></button>
+        <button class="state-tile" data-state="focus" type="button"><span class="tile-paint"><i></i></span><strong>focus-visible</strong><small>焦点环</small></button>
+        <button class="state-tile" data-state="pressed" type="button"><span class="tile-paint"><i></i></span><strong>pressed</strong><small>压痕 · 缩放</small></button>
+        <button class="state-tile" data-state="clicked" type="button"><span class="tile-paint"><i></i></span><strong>clicked</strong><small>果汁回弹</small></button>
+        <button class="state-tile" data-state="disabled" type="button" disabled><span class="tile-paint"><i></i></span><strong>disabled</strong><small>保留纹理</small></button>
+        <button class="state-tile" data-state="selected" type="button" aria-pressed="false"><span class="tile-paint"><i></i></span><strong>selected</strong><small>边缘描线</small></button>
+        <button class="state-tile" data-state="loading" type="button"><span class="tile-paint"><i></i></span><strong>loading</strong><small>线性旋转</small></button>
+        <button class="state-tile" data-state="success" type="button"><span class="tile-paint"><i></i></span><strong>success</strong><small>高光 · 勾号</small></button>
+        <button class="state-tile" data-state="error" type="button"><span class="tile-paint"><i></i></span><strong>error</strong><small>一次轻抖</small></button>
+      </div>
+      <p class="state-log" id="stateLog" role="status" aria-live="polite">点击任意状态卡，查看对应补间。</p>
+    </section>
+
+    <section class="lab-grid" aria-label="补间实验室">
+      <article class="paint-card easing-card">
+        <div class="card-eyebrow">03 · EASING LAB</div>
+        <h2>换一条曲线</h2>
+        <div class="controls-row">
+          <label for="easingSelect">easing</label>
+          <select id="easingSelect">
+            <option value="ease-standard">标准 · 160ms</option>
+            <option value="ease-enter">进入 · 320ms</option>
+            <option value="ease-juice" selected>果汁 · 360ms</option>
+            <option value="ease-jelly">果冻 · 440ms</option>
+            <option value="ease-step">步进 · 280ms</option>
+          </select>
+        </div>
+        <button class="impasto-button lab-button" id="easingButton" type="button"><span class="button-sheen" aria-hidden="true"></span><span class="button-label">播放这条曲线</span><span class="button-glyph" aria-hidden="true">✦</span></button>
+        <div class="curve-track" aria-label="当前 easing 可视化"><span id="curveDot"></span><span class="track-brush"></span></div>
+        <p class="lab-note" id="easingNote">当前：果汁回弹 cubic-bezier(.22, 1.25, .36, 1)</p>
+      </article>
+
+      <article class="paint-card timeline-card">
+        <div class="card-eyebrow">04 · MICRO-INTERACTIONS</div>
+        <h2>微交互配方</h2>
+        <div class="timeline" id="timeline">
+          <div class="timeline-step active"><span>01</span><strong>材质</strong><small>原始刀痕</small></div>
+          <div class="timeline-step"><span>02</span><strong>动势</strong><small>transform</small></div>
+          <div class="timeline-step"><span>03</span><strong>反馈</strong><small>文字 / 图标</small></div>
+          <div class="timeline-step"><span>04</span><strong>降级</strong><small>reduced motion</small></div>
+        </div>
+        <button class="text-action" id="advanceTimeline" type="button">逐步查看配方 <span>→</span></button>
+      </article>
+    </section>
+
+    <footer class="footer-note"><span>H5 DOM · pointer + keyboard · mobile safe</span><span>状态契约 v1.0 · <a href="../SKILL.md">阅读 Skill</a></span></footer>
+  </main>
+  <script src="main.js"></script>
+</body>
+</html>
