@@ -28,25 +28,25 @@
         <div class="hero-content">
           <div>
             <h2>给按钮一点果汁感</h2>
-            <p>移入上浮，按下压痕，点击后回弹。纹理与刀痕始终保留，不用纯色块覆盖材质。</p>
+            <p>移入上浮，按下压痕，点击后进入 loading，再回到 success。纹理与刀痕始终保留，不用纯色块覆盖材质。</p>
           </div>
-          <button class="impasto-button hero-button" id="heroButton" type="button">
+          <button class="impasto-button hero-button magnetic" id="heroButton" type="button" aria-busy="false">
+            <span class="button-geometry" aria-hidden="true"></span>
             <span class="button-sheen" aria-hidden="true"></span>
-            <span class="button-label">试一下回弹</span>
-            <span class="button-glyph" aria-hidden="true">↗</span>
+            <span class="button-copy"><span class="button-label">试一下回弹</span><span class="button-glyph" aria-hidden="true">↗</span></span>
           </button>
-          <p class="live-note" id="heroNote" role="status" aria-live="polite">等待你的操作。</p>
+          <p class="live-note" id="heroNote" role="status" aria-live="polite">状态机：default，等待你的操作。</p>
         </div>
       </article>
       <aside class="paint-card recipe-card">
         <div class="card-eyebrow">MOTION RECIPE</div>
-        <div class="recipe-display"><span class="recipe-swatch"></span><code>cubic-bezier(.22, 1.25, .36, 1)</code></div>
+        <div class="recipe-display"><span class="recipe-swatch"></span><code id="heroRecipeCode">cubic-bezier(.22, 1.25, .36, 1)</code></div>
         <dl class="metric-list">
-          <div><dt>主反馈</dt><dd>360ms</dd></div>
+          <div><dt>主反馈</dt><dd id="heroDuration">360ms</dd></div>
           <div><dt>超调上限</dt><dd>4%</dd></div>
           <div><dt>材质层</dt><dd>保留</dd></div>
         </dl>
-        <p class="recipe-caption">y 控制点允许小幅越界，营造手工压痕后的回弹。</p>
+        <p class="recipe-caption">状态机和动效句柄可中断、可恢复；触控时使用 pressed 等价反馈。</p>
       </aside>
     </section>
 
@@ -74,14 +74,14 @@
         <div class="controls-row">
           <label for="easingSelect">easing</label>
           <select id="easingSelect">
-            <option value="ease-standard">标准 · 160ms</option>
+            <option value="ease-standard">标准 · 180ms</option>
             <option value="ease-enter">进入 · 320ms</option>
             <option value="ease-juice" selected>果汁 · 360ms</option>
             <option value="ease-jelly">果冻 · 440ms</option>
             <option value="ease-step">步进 · 280ms</option>
           </select>
         </div>
-        <button class="impasto-button lab-button" id="easingButton" type="button"><span class="button-sheen" aria-hidden="true"></span><span class="button-label">播放这条曲线</span><span class="button-glyph" aria-hidden="true">✦</span></button>
+        <button class="impasto-button lab-button" id="easingButton" type="button"><span class="button-geometry" aria-hidden="true"></span><span class="button-sheen" aria-hidden="true"></span><span class="button-copy"><span class="button-label">播放这条曲线</span><span class="button-glyph" aria-hidden="true">✦</span></span></button>
         <div class="curve-track" aria-label="当前 easing 可视化"><span id="curveDot"></span><span class="track-brush"></span></div>
         <p class="lab-note" id="easingNote">当前：果汁回弹 cubic-bezier(.22, 1.25, .36, 1)</p>
       </article>
@@ -99,7 +99,40 @@
       </article>
     </section>
 
-    <footer class="footer-note"><span>H5 DOM · pointer + keyboard · mobile safe</span><span>状态契约 v1.0 · <a href="../SKILL.md">阅读 Skill</a></span></footer>
+    <section class="paint-card recipe-lab" aria-labelledby="recipes-title">
+      <div class="section-heading"><div><p class="kicker">05 · RECIPE CATALOG</p><h2 id="recipes-title">按钮动效配方实验台</h2></div><span class="section-count">6 recipes</span></div>
+      <div class="recipe-controls">
+        <label for="recipeSelect">配方</label>
+        <select id="recipeSelect">
+          <option value="background-slide">背景滑入 · background-slide</option>
+          <option value="border-spread">边框扩散 · border-spread</option>
+          <option value="pseudo-wipe">伪元素擦拭 · pseudo-wipe</option>
+          <option value="icon-shift">图标位移 · icon-shift</option>
+          <option value="local-sheen">局部高光 · local-sheen</option>
+          <option value="magnetic-follow">磁性跟随 · magnetic-follow</option>
+        </select>
+        <button class="impasto-button recipe-play magnetic" id="recipePlay" type="button"><span class="button-geometry" aria-hidden="true"></span><span class="button-sheen" aria-hidden="true"></span><span class="button-copy"><span class="button-label">播放配方</span><span class="button-glyph" aria-hidden="true">✦</span></span></button>
+      </div>
+      <div class="recipe-stage" id="recipeStage" data-recipe="background-slide">
+        <span class="recipe-stage-geometry" aria-hidden="true"></span>
+        <span class="recipe-stage-border" aria-hidden="true"></span>
+        <span class="recipe-stage-sheen" aria-hidden="true"></span>
+        <span class="recipe-stage-icon" aria-hidden="true">↗</span>
+        <span class="recipe-stage-copy"><strong id="recipeTitle">背景滑入</strong><small id="recipeDescription">让底部油彩纹理滑入，不覆盖主体。</small></span>
+      </div>
+      <p class="lab-note" id="recipeNote">background-slide：主几何层保持，纹理从 -18px 滑入。</p>
+    </section>
+
+    <section class="paint-card qa-card" aria-labelledby="qa-title">
+      <div class="section-heading"><div><p class="kicker">06 · QA GATE</p><h2 id="qa-title">快速验收记录</h2></div><span class="section-count" id="qaScore">待运行</span></div>
+      <div class="qa-actions"><button class="chip-button" id="runQa" type="button">运行自检</button><span class="perf-readout" id="perfReadout">FPS 采样：— · 活动动画：0</span></div>
+      <ul class="qa-list" id="qaList">
+        <li data-check="rapid">快速点击：—</li><li data-check="interrupt">移入移出/中断恢复：—</li><li data-check="touch">触控区 ≥44px：—</li><li data-check="budget">时长预算：—</li><li data-check="reduced">reduced-motion：—</li><li data-check="material">材质与文字安全区：—</li>
+      </ul>
+      <p class="lab-note">自检只记录浏览器可观察指标；真实设备仍需在窄屏触控上复核。</p>
+    </section>
+
+    <footer class="footer-note"><span>H5 DOM · pointer + keyboard · mobile safe</span><span>状态契约 v2.0 · <a href="../SKILL.md">阅读 Skill</a></span></footer>
   </main>
   <script src="main.js"></script>
 </body>

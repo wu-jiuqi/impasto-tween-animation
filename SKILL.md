@@ -140,3 +140,29 @@ play(button, [
 - reduced motion 自动检测和手动开关均有效；
 - 窄屏无横向滚动，按钮触控区 ≥44px；
 - `node --check`、JSON 解析和本地 HTTP 200 自检通过。
+
+## v2.0 新增：配方、状态机与双通道
+
+### 配方库
+
+六类按钮配方写在 `references/recipe-catalog.md`，并在 H5 Demo 的「按钮动效配方实验台」中可切换、可重播：背景滑入、边框扩散、伪元素擦拭、图标位移、局部高光、磁性跟随。配方只作用于透明装饰或几何层，不允许把油彩本体替换成纯色。
+
+### 按钮状态机
+
+完整路径是 `default → hover/focus-visible → pressed → clicked → loading → success/error → default`，`disabled` 具有最高优先级。状态优先级、中断、恢复和 pointercancel 清理见 `references/state-machine.md`。同一组件始终只有一个可取消的 active animation 句柄。
+
+### 材质层 / 几何层双通道
+
+按钮至少拆成几何层、材质层、语义层三层。属性白名单与文字安全区见 `references/material-geometry-channel.md`。几何层可以 transform；材质层只允许低幅度 opacity/filter/纹理位移；文字和图标不得被 `scaleX/scaleY` 拉伸。
+
+### 指针反应安全边界
+
+pointer-reactive 必须有最大偏移（默认 6px）和速度阈值（默认 2200px/s），并在 `pointercancel`、`pointerleave`、`blur` 清理。触控降级为 pressed/selected；reduced-motion 自动关闭磁性跟随和循环。
+
+### H5 → Godot 映射
+
+manifest 的 easing token 同时包含 CSS 和 Godot Tween 映射；完整表见 `references/godot-mapping.md`。Godot 版本不支持对应 transition 时，回退到 cubic，不在普通模式直接瞬移。
+
+### 强化验收
+
+Demo 的 QA Gate 记录快速点击、移入移出/动画中断、44px 触控区、时长预算、reduced-motion、材质/文字安全区，并持续采样 FPS 与活动动画数量。需要在真实移动设备上复核触控；Demo 自检不是设备性能承诺。
